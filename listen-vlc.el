@@ -52,7 +52,8 @@
     (save-excursion
       (insert (listen--send player "info")))
     (cl-loop while (re-search-forward (rx bol "| " (group (1+ (not blank))) ": "
-                                          (group (1+ (not (any ""))))) nil t)
+                                          (group (1+ (not (any "
+"))))) nil t)
              collect (cons (match-string 1) (match-string 2)))))
 
 (cl-defmethod listen--filename ((player listen-player-vlc))
@@ -134,7 +135,7 @@ VOLUME is an integer percentage."
         (progn
           (unless (<= 0 volume max-volume)
             (error "VOLUME must be 0-%s" max-volume))
-          (listen--send player (format "volume %s" (* 255 (/ volume 100.0)))))
+          (listen--send player (format "volume %i" (* 255 (/ volume 100.0)))))
       (* 100 (/ (string-to-number (listen--send player "volume")) 255.0)))))
 
 (provide 'listen-vlc)
